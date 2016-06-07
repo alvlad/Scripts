@@ -13,6 +13,9 @@
 .Parameter SearchOU
    OU in which it is necessary to find users for addition in group
 
+.Parameter CountDates
+   Contains the number of days, are necessary for definition of initial date of a temporary interval
+
 .Parameter CountAddUser
    The counter of the users added to group. Increases with each new user
 
@@ -56,22 +59,35 @@ function Add-UsersGroup
                    ValueFromPipelineByPropertyName=$true,
                    HelpMessage = "Organization unit in which it is necessary to find users for addition in group",
                    Position=1)]
-        $NameOU
+        $NameOU,
+
+        # Parameter contains the number of days
+        [Parameter(Mandatory=$true,
+                   ValueFromPipelineByPropertyName=$true,
+                   HelpMessage = "Parameter contains the number of days, are necessary for definition of initial date of a temporary interval",
+                   Position=2)]
+        $CountDates
+
     )
 
     Begin
     {
+        
         # Import Active Directory powershell module
         Import-Module ActiveDirectory
 
         # Install the counter of users
         $CountAddUser=0
+        
+        # Install range date
+        $BeginDate = (Get-Date).AddDays(-$CountDates)
+        $EndDate = Get-Date
 
         # Define a LDAP way to OU with users
         $DsNameOU = (Get-ADOrganizationalUnit -Filter 'Name -like $NameOU').DistinguishedName
 
         # Receive the users having an email address
-        $MailUsers = Get-ADUser -Filter {mail -like '*'} -SearchBase $DsNameOU -Properties Mail
+        $MailUsers = Get-ADUser -Filter {mail -like '*'} -SearchBase $DsNameOU -Properties Mail,Created | Where-Object {$_.Created -gt $BeginDate -and $_.Created -lt $EndDate}
 
         # Receive LDAP way to destination group
         $group = (Get-ADGroup -Filter 'Name -like $GroupName').DistinguishedName
