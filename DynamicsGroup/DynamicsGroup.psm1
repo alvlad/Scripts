@@ -30,7 +30,7 @@
 
 .Example
    Import-Module -Name DynamicsGroup
-   Add-UsersGroup -GroupName "TestGroup" -NameOU "Test OU"
+   Add-UsersGroup -GroupName "TestGroup" -NameOU "Test OU" -CountDates 2
 
 .Notes
     Author:
