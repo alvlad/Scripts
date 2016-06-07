@@ -10,7 +10,7 @@
 .Parameter GroupName
    Group to which users will be added
 
-.Parameter SearchOU
+.Parameter NameOU
    OU in which it is necessary to find users for addition in group
 
 .Parameter CountDates
