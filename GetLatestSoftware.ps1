@@ -8,8 +8,8 @@
 #>
 
 # Set folder for downloaded files
-$downloadFolder = "c:\scripts\download\"
-$downloadFolderTemp = "C:\Scripts\download\Temp"
+$downloadFolder = ""
+$downloadFolderTemp = ""
 
 # Test source folder
 if (Test-Path $downloadFolder)
@@ -24,7 +24,7 @@ else
 
 # Set Proxy Address 
 $UserAgent = [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox
-$proxyAddr = 'http://bel-srv-tmg:8080'
+$proxyAddr = ''
 $proxy = new-object System.Net.WebProxy
 $proxy.Address = $proxyAddr
 $proxy.useDefaultCredentials = $true          
